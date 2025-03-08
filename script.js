@@ -1,4 +1,4 @@
-const API_URL = 'YOUR_GOOGLE_SCRIPT_URL';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzxiPziON6tOceqX5KPZDCg82Q613SfsCDQdG_QyBqs8wbnFIgRjLHj-crxZM0yj0xU/exec;
 
 function addGoal() {
     const goalName = prompt("Введите название цели:");
