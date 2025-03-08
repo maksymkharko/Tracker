@@ -151,8 +151,7 @@ section:hover {
     transition: all 0.2s ease;
 }
 
-.transfer-btn:hover,
-.transfer-btn:focus {
+.transfer-btn:hover {
     background: var(--accent-color);
     color: var(--background-color);
 }
@@ -170,24 +169,11 @@ section:hover {
     z-index: 1001;
     margin-top: 0.5rem;
     border: 1px solid var(--accent-color);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.dropdown-content.show {
+.transfer-dropdown:hover .dropdown-content {
     display: block;
-    opacity: 1;
-    visibility: visible;
     animation: fadeIn 0.2s ease;
-}
-
-.transfer-dropdown:hover .dropdown-content,
-.transfer-dropdown:focus-within .dropdown-content,
-.dropdown-content.active {
-    display: block;
-    opacity: 1;
-    visibility: visible;
 }
 
 .dropdown-item {
