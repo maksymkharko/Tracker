@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трекер целей и событий</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header-controls">
+        <div class="header-left">
+            <button id="themeToggle" class="control-btn theme-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke-width="2"/>
+                    <path d="M12 3V5M12 19V21M5 12H3M21 12H19M18.364 5.636L16.95 7.05M7.05 16.95L5.636 18.364M18.364 18.364L16.95 16.95M7.05 7.05L5.636 5.636" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="transfer-dropdown">
+                <button id="transferBtn" class="control-btn transfer-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                        <path d="M8 2v12M4 6l4-4 4 4M2 14h12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Перенос
+                </button>
+                <div class="dropdown-content">
+                    <button id="copyMdBtn" class="dropdown-item">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 12L8 4M8 4L5 7M8 4L11 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Экспорт
+                    </button>
+                    <button id="pasteMdBtn" class="dropdown-item">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 4L8 12M8 12L5 9M8 12L11 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Импорт
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="header-time">
+            <div class="human-time">
+                <div class="human-time-clock" id="humanClock">00:00:00</div>
+                <div class="human-time-date" id="humanDate">1 января 2024</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>Трекер целей и событий</h1>
+        </header>
+
+        <main>
+            <section class="goals-section">
+                <h2>Мои цели</h2>
+                <div id="goalsList" class="goals-list"></div>
+                <button id="addGoalBtn" class="add-btn">Добавить цель</button>
+            </section>
+
+            <section class="events-section">
+                <h2>Мои события</h2>
+                <div id="eventsList" class="events-list"></div>
+                <button id="addEventBtn" class="add-btn">Добавить событие</button>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <div class="data-controls">
+                <button id="copyMdBtn" class="control-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 12L8 4M8 4L5 7M8 4L11 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Экспорт
+                </button>
+                <button id="pasteMdBtn" class="control-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 4L8 12M8 12L5 9M8 12L11 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Импорт
+                </button>
+            </div>
+        </footer>
+
+        <!-- Модальное окно для добавления цели -->
+        <div id="goalModal" class="modal">
+            <div class="modal-content">
+                <h2>Добавить новую цель</h2>
+                <form id="goalForm">
+                    <input type="text" id="goalName" placeholder="Название цели" required>
+                    <button type="submit">Начать отсчет</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Модальное окно для добавления события -->
+        <div id="eventModal" class="modal">
+            <div class="modal-content">
+                <h2>Добавить новое событие</h2>
+                <form id="eventForm">
+                    <input type="text" id="eventName" placeholder="Название события" required>
+                    <input type="datetime-local" id="eventDateTime" required>
+                    <button type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Модальное окно для достижений -->
+        <div id="achievementModal" class="modal">
+            <div class="modal-content achievement">
+                <h2>Поздравляем!</h2>
+                <p id="achievementText"></p>
+                <button class="close-btn">Закрыть</button>
+            </div>
+        </div>
+
+        <!-- Модальное окно для выбора элементов для копирования -->
+        <div id="copyModal" class="modal">
+            <div class="modal-content">
+                <h2>Выберите элементы для копирования</h2>
+                <div class="copy-list">
+                    <div class="copy-section">
+                        <div class="section-header">
+                            <h3>Цели</h3>
+                            <label class="select-all">
+                                <input type="checkbox" id="selectAllGoals"> Выбрать все цели
+                            </label>
+                        </div>
+                        <div id="copyGoalsList" class="items-list"></div>
+                    </div>
+                    <div class="copy-section">
+                        <div class="section-header">
+                            <h3>События</h3>
+                            <label class="select-all">
+                                <input type="checkbox" id="selectAllEvents"> Выбрать все события
+                            </label>
+                        </div>
+                        <div id="copyEventsList" class="items-list"></div>
+                    </div>
+                    <div class="copy-buttons">
+                        <button id="copySelectedBtn" class="control-btn">Копировать выбранное</button>
+                        <button id="closeCopyBtn" class="control-btn">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для экспорта/импорта данных -->
+        <div id="dataModal" class="modal">
+            <div class="modal-content">
+                <h2 id="dataModalTitle">Вставьте данные</h2>
+                <div class="data-transfer">
+                    <textarea id="dataField" rows="5" placeholder="Вставьте скопированные данные"></textarea>
+                    <div class="data-buttons">
+                        <button id="saveDataBtn" class="control-btn">Сохранить</button>
+                        <button id="closeDataBtn" class="control-btn">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/dropdown.js"></script>
+</body>
+</html> 
