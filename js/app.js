@@ -82,9 +82,29 @@ class App {
         this.themeToggle.addEventListener('click', () => this.toggleTheme());
 
         // Data controls
-        this.copyMdBtn.addEventListener('click', () => this.showCopyModal());
-        this.pasteMdBtn.addEventListener('click', () => this.showPasteData());
-        this.saveDataBtn.addEventListener('click', () => this.importData());
+        this.copyMdBtn.addEventListener('click', async () => {
+            // Добавляем задержку перед закрытием меню
+            setTimeout(async () => {
+                const ExportManager = (await import('./exportManager.js')).default;
+                await ExportManager.export();
+            }, 300); // 300мс задержка
+        });
+
+        this.pasteMdBtn.addEventListener('click', () => {
+            this.showPasteData();
+        });
+
+        this.saveDataBtn.addEventListener('click', async () => {
+            const ExportManager = (await import('./exportManager.js')).default;
+            const success = await ExportManager.import(this.dataField.value);
+            if (success) {
+                this.loadData(); // Перезагружаем данные
+                this.hideModals();
+                this.showAchievement('Данные успешно импортированы');
+            } else {
+                this.showError('Ошибка при импорте данных');
+            }
+        });
         this.closeDataBtn.addEventListener('click', () => this.hideModals());
         this.copySelectedBtn.addEventListener('click', () => this.copySelectedData());
         this.closeCopyBtn.addEventListener('click', () => this.hideModals());
@@ -499,8 +519,15 @@ class App {
     }
 
     showPasteData() {
-        this.dataField.value = '';
         this.dataModal.classList.add('active');
+        this.dataField.value = '';
+        this.dataField.placeholder = `Вставьте данные в формате:
+
+## Цели
+- [<Название цели / YYYY-MM-DDThh:mm]
+
+## События
+[>Название события / YYYY-MM-DDThh:mm]`;
     }
 
     parseDate(dateStr) {
